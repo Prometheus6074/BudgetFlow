@@ -1,7 +1,8 @@
 /* ════════════════════════════════════════════════════
    BUDGETFLOW — app.js
    Features: Budget Limits, Goals, Charts, Bills,
-   Always-visible Balance, Manual Entry, Categories
+   Period-based Balance (Daily/Weekly/Monthly/Yearly),
+   Prev/Next Period Navigation, Manual Entry, Categories
    Icons: Lucide (https://lucide.dev)
    ════════════════════════════════════════════════════ */
 
@@ -51,10 +52,8 @@ function loadState() {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
       state = JSON.parse(raw);
-      // Always use latest category definitions (icon names may have changed)
       state.categories = DEFAULT_CATEGORIES;
     } else {
-      // First run: start completely empty — no sample data
       state = {
         transactions: [],
         categories:   DEFAULT_CATEGORIES,
@@ -182,6 +181,81 @@ function refreshIcons() {
 }
 
 // ═══════════════════════════════════════════════
+//  3b. HEADER PERIOD LOGIC
+// ═══════════════════════════════════════════════
+
+// 'daily' | 'weekly' | 'monthly' | 'yearly'
+let headerPeriodMode   = 'monthly';
+// 0 = current, -1 = previous, -2 = two periods ago, etc.
+let headerPeriodOffset = 0;
+
+/**
+ * Returns { start, end, label } for the given mode + offset.
+ * offset 0 = current period, -1 = previous, etc.
+ */
+function getHeaderRange(mode, offset) {
+  const now = new Date();
+  let start, end, label;
+
+  if (mode === 'daily') {
+    const d = new Date(now);
+    d.setDate(d.getDate() + offset);
+    const dateStr = d.toISOString().split('T')[0];
+    start = dateStr;
+    end   = dateStr;
+    if (offset === 0)       label = 'Today';
+    else if (offset === -1) label = 'Yesterday';
+    else                    label = formatDate(dateStr);
+
+  } else if (mode === 'weekly') {
+    // Anchor to the Sunday of the current week, then shift by offset weeks
+    const d = new Date(now);
+    d.setDate(d.getDate() + offset * 7);
+    const dow = d.getDay();                       // 0=Sun
+    const wStart = new Date(d);
+    wStart.setDate(d.getDate() - dow);
+    const wEnd = new Date(wStart);
+    wEnd.setDate(wStart.getDate() + 6);
+    start = wStart.toISOString().split('T')[0];
+    end   = wEnd.toISOString().split('T')[0];
+    if (offset === 0)       label = 'This Week';
+    else if (offset === -1) label = 'Last Week';
+    else                    label = `Wk of ${formatDateShort(start)}`;
+
+  } else if (mode === 'monthly') {
+    const d = new Date(now.getFullYear(), now.getMonth() + offset, 1);
+    const mEnd = new Date(d.getFullYear(), d.getMonth() + 1, 0);
+    start = d.toISOString().split('T')[0];
+    end   = mEnd.toISOString().split('T')[0];
+    if (offset === 0) label = 'This Month';
+    else              label = d.toLocaleDateString('en-PH', { month: 'long', year: 'numeric' });
+
+  } else { // yearly
+    const year = now.getFullYear() + offset;
+    start = `${year}-01-01`;
+    end   = `${year}-12-31`;
+    if (offset === 0) label = 'This Year';
+    else              label = String(year);
+  }
+
+  return { start, end, label };
+}
+
+function updatePeriodModeUI() {
+  // Highlight the active mode button
+  document.querySelectorAll('.period-mode-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.mode === headerPeriodMode);
+  });
+
+  // Disable "next" when already at the current period
+  const nextBtn = document.getElementById('nextPeriodBtn');
+  if (nextBtn) {
+    nextBtn.disabled = headerPeriodOffset >= 0;
+    nextBtn.style.opacity = headerPeriodOffset >= 0 ? '0.35' : '1';
+  }
+}
+
+// ═══════════════════════════════════════════════
 //  4. BILLS AUTO-DEDUCTION
 // ═══════════════════════════════════════════════
 
@@ -226,23 +300,28 @@ function processBills() {
 // ═══════════════════════════════════════════════
 
 function renderHeader() {
-  const balance = getNetBalance();
+  const { start, end, label } = getHeaderRange(headerPeriodMode, headerPeriodOffset);
+  const periodTx = getTransactionsInRange(start, end);
+  const income   = getTotalInflow(periodTx);
+  const expenses = getTotalOutflow(periodTx);
+  const balance  = income - expenses;
+
   const el = document.getElementById('totalBalance');
   el.textContent = formatCurrency(balance);
   el.classList.toggle('negative', balance < 0);
 
-  const { start, end } = getPeriodRange('monthly');
-  const monthTx  = getTransactionsInRange(start, end);
-  const income   = getTotalInflow(monthTx);
-  const expenses = getTotalOutflow(monthTx);
-  const bills    = state.bills.filter(b => b.autoDeduct && b.frequency === 'monthly').reduce((s, b) => s + b.amount, 0);
-
+  document.getElementById('balancePeriodLabel').textContent = label;
   document.getElementById('totalIncome').textContent   = formatCurrencyShort(income);
   document.getElementById('totalExpenses').textContent = formatCurrencyShort(expenses);
-  document.getElementById('totalBills').textContent    = formatCurrencyShort(bills);
+
+  // Bills pill: always show the recurring monthly bill total regardless of period
+  const bills = state.bills.filter(b => b.autoDeduct && b.frequency === 'monthly').reduce((s, b) => s + b.amount, 0);
+  document.getElementById('totalBills').textContent = formatCurrencyShort(bills);
 
   const now = new Date();
   document.getElementById('headerDate').textContent = now.toLocaleDateString('en-PH', { weekday: 'short', month: 'long', day: 'numeric' });
+
+  updatePeriodModeUI();
 }
 
 // ═══════════════════════════════════════════════
@@ -1007,8 +1086,8 @@ function openGoalContrib(id) {
   document.getElementById('goalContribId').value = id;
   document.getElementById('goalContribTitle').textContent = `Update: ${g.name}`;
   document.getElementById('goalContribLabel').textContent = g.type === 'debt'
-    ? `Amount Paid Off (\u20B1) — currently ${formatCurrency(g.current)}`
-    : `Amount Saved (\u20B1) — currently ${formatCurrency(g.current)}`;
+    ? `Amount Paid Off (\u20B1) \u2014 currently ${formatCurrency(g.current)}`
+    : `Amount Saved (\u20B1) \u2014 currently ${formatCurrency(g.current)}`;
   document.getElementById('goalContribAmount').value = g.current;
   openModal('goalContribModal');
 }
@@ -1161,13 +1240,53 @@ function bindEvents() {
 
   // Link buttons (e.g. "See all" on dashboard)
   document.querySelectorAll('[data-tab]').forEach(btn => {
-    if (!btn.classList.contains('nav-item') && !btn.classList.contains('toggle-pill') && !btn.classList.contains('filter-chip')) {
+    if (!btn.classList.contains('nav-item') && !btn.classList.contains('toggle-pill') && !btn.classList.contains('filter-chip') && !btn.classList.contains('period-mode-btn')) {
       btn.addEventListener('click', () => switchTab(btn.dataset.tab));
     }
   });
 
   // FAB
   document.getElementById('addTransFab').addEventListener('click', () => openAddTransaction('outflow'));
+
+  // ─── Header Period Mode Buttons ───
+  document.querySelectorAll('.period-mode-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      headerPeriodMode   = btn.dataset.mode;
+      headerPeriodOffset = 0;            // reset to current period on mode switch
+      renderHeader();
+    });
+  });
+
+  // ─── Prev / Next Period ───
+  document.getElementById('prevPeriodBtn').addEventListener('click', () => {
+    headerPeriodOffset -= 1;
+    renderHeader();
+  });
+
+  document.getElementById('nextPeriodBtn').addEventListener('click', () => {
+    if (headerPeriodOffset < 0) {
+      headerPeriodOffset += 1;
+      renderHeader();
+    }
+  });
+
+  // ─── Swipe on balance card ───
+  const header = document.getElementById('appHeader');
+  let touchStartX = 0;
+  header.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+  header.addEventListener('touchend', e => {
+    const diff = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(diff) < 40) return;     // ignore tiny movements
+    if (diff < 0) {
+      // Swipe left = go to previous period
+      headerPeriodOffset -= 1;
+      renderHeader();
+    } else if (diff > 0 && headerPeriodOffset < 0) {
+      // Swipe right = go to next period (only if not already at current)
+      headerPeriodOffset += 1;
+      renderHeader();
+    }
+  }, { passive: true });
 
   // Sub tabs (Budget)
   document.querySelectorAll('.sub-tab').forEach(btn => {
@@ -1270,6 +1389,8 @@ function bindEvents() {
   // Keyboard shortcuts
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') closeAllModals();
+    if (e.key === 'ArrowLeft'  && !document.querySelector('.modal.visible')) { headerPeriodOffset -= 1; renderHeader(); }
+    if (e.key === 'ArrowRight' && !document.querySelector('.modal.visible') && headerPeriodOffset < 0) { headerPeriodOffset += 1; renderHeader(); }
   });
 
   // Swipe-down to close modal

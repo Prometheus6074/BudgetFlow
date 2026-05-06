@@ -82,7 +82,7 @@ svg { display: block; }
 .app-header {
   background: linear-gradient(160deg, var(--clr-primary) 0%, var(--clr-secondary) 100%);
   color: white;
-  padding: 16px 20px 24px;
+  padding: 16px 20px 20px;
   position: sticky;
   top: 0;
   z-index: 100;
@@ -93,7 +93,7 @@ svg { display: block; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
 }
 
 .header-brand {
@@ -124,38 +124,45 @@ svg { display: block; }
   color: white;
 }
 
-.header-meta {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 4px;
-}
-
-.offline-badge {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 0.65rem;
-  font-weight: 600;
-  background: rgba(255,255,255,0.15);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255,255,255,0.25);
-  color: white;
-  padding: 3px 8px;
-  border-radius: 20px;
-  letter-spacing: 0.02em;
-}
-
 .header-date {
   font-size: 0.7rem;
   color: rgba(255,255,255,0.65);
   font-weight: 500;
 }
 
+/* ─── Period Mode Tabs ─── */
+.period-mode-tabs {
+  display: flex;
+  background: rgba(0,0,0,0.18);
+  border-radius: 12px;
+  padding: 3px;
+  gap: 2px;
+  margin-bottom: 16px;
+}
+
+.period-mode-btn {
+  flex: 1;
+  padding: 6px 0;
+  border-radius: 9px;
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.60);
+  background: transparent;
+  transition: all var(--transition);
+  letter-spacing: 0.02em;
+}
+
+.period-mode-btn.active {
+  background: rgba(255,255,255,0.20);
+  color: white;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.20);
+}
+
 /* Balance Card */
 .balance-card {
   text-align: center;
-  padding: 4px 0;
+  padding: 0;
 }
 
 .balance-label {
@@ -164,22 +171,67 @@ svg { display: block; }
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: rgba(255,255,255,0.70);
+  margin-bottom: 6px;
+}
+
+/* ─── Balance Nav Row ─── */
+.balance-nav-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
   margin-bottom: 4px;
+}
+
+.balance-nav-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.18);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition);
+  flex-shrink: 0;
+}
+
+.balance-nav-btn:hover:not(:disabled) {
+  background: rgba(255,255,255,0.22);
+}
+
+.balance-nav-btn:active:not(:disabled) {
+  transform: scale(0.92);
+}
+
+.balance-nav-btn:disabled {
+  cursor: default;
 }
 
 .balance-amount {
   font-family: var(--font-heading);
-  font-size: 2.6rem;
+  font-size: 2.4rem;
   font-weight: 800;
   color: white;
   letter-spacing: -0.04em;
   line-height: 1;
-  margin-bottom: 16px;
   transition: color var(--transition);
+  min-width: 0;
 }
 
 .balance-amount.negative {
   color: #ff8a7a;
+}
+
+/* ─── Period Label Below Balance ─── */
+.balance-period-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.65);
+  margin-bottom: 14px;
+  letter-spacing: 0.02em;
+  min-height: 1em;
 }
 
 .balance-pills {
@@ -1550,8 +1602,9 @@ svg { display: block; }
 }
 
 @media (max-width: 360px) {
-  .balance-amount { font-size: 2.2rem; }
-  .balance-pills  { gap: 5px; }
-  .balance-pill   { padding: 6px 8px; }
-  .pill-value     { font-size: 0.75rem; }
+  .balance-amount  { font-size: 2rem; }
+  .balance-pills   { gap: 5px; }
+  .balance-pill    { padding: 6px 8px; }
+  .pill-value      { font-size: 0.75rem; }
+  .period-mode-btn { font-size: 0.65rem; }
 }

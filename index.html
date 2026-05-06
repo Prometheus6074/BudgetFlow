@@ -22,39 +22,50 @@
         <span class="brand-dot"></span>
         <h1 class="brand-name">BudgetFlow</h1>
       </div>
-      <div class="header-meta">
-        <span class="offline-badge" id="offlineBadge" title="All data saved locally">
-          <i data-lucide="zap" style="width:10px;height:10px"></i>
-          Offline Ready
-        </span>
-        <span class="header-date" id="headerDate"></span>
-      </div>
+      <span class="header-date" id="headerDate"></span>
+    </div>
+
+    <!-- Period mode selector -->
+    <div class="period-mode-tabs" id="periodModeTabs">
+      <button class="period-mode-btn" data-mode="daily">Daily</button>
+      <button class="period-mode-btn active" data-mode="monthly">Monthly</button>
+      <button class="period-mode-btn" data-mode="weekly">Weekly</button>
+      <button class="period-mode-btn" data-mode="yearly">Yearly</button>
     </div>
 
     <div class="balance-card">
       <p class="balance-label">Net Balance</p>
-      <h2 class="balance-amount" id="totalBalance">₱0.00</h2>
+      <div class="balance-nav-row">
+        <button class="balance-nav-btn" id="prevPeriodBtn" title="Previous period">
+          <i data-lucide="chevron-left" style="width:20px;height:20px"></i>
+        </button>
+        <h2 class="balance-amount" id="totalBalance">&#8369;0.00</h2>
+        <button class="balance-nav-btn" id="nextPeriodBtn" title="Next period">
+          <i data-lucide="chevron-right" style="width:20px;height:20px"></i>
+        </button>
+      </div>
+      <div class="balance-period-label" id="balancePeriodLabel">This Month</div>
       <div class="balance-pills">
-        <div class="balance-pill inflow">
+        <div class="balance-pill">
           <span class="pill-label">
             <i data-lucide="arrow-up" style="width:9px;height:9px"></i>
             Income
           </span>
-          <span class="pill-value" id="totalIncome">₱0</span>
+          <span class="pill-value" id="totalIncome">&#8369;0</span>
         </div>
-        <div class="balance-pill outflow">
+        <div class="balance-pill">
           <span class="pill-label">
             <i data-lucide="arrow-down" style="width:9px;height:9px"></i>
             Expenses
           </span>
-          <span class="pill-value" id="totalExpenses">₱0</span>
+          <span class="pill-value" id="totalExpenses">&#8369;0</span>
         </div>
-        <div class="balance-pill savings">
+        <div class="balance-pill">
           <span class="pill-label">
             <i data-lucide="refresh-cw" style="width:9px;height:9px"></i>
             Bills
           </span>
-          <span class="pill-value" id="totalBills">₱0</span>
+          <span class="pill-value" id="totalBills">&#8369;0</span>
         </div>
       </div>
     </div>
@@ -176,7 +187,7 @@
           <canvas id="categoryChart"></canvas>
           <div class="doughnut-center" id="doughnutCenter">
             <span class="doughnut-label">Total</span>
-            <span class="doughnut-amount" id="doughnutTotal">₱0</span>
+            <span class="doughnut-amount" id="doughnutTotal">&#8369;0</span>
           </div>
         </div>
         <div class="chart-legend" id="categoryLegend"></div>
