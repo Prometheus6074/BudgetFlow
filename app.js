@@ -301,10 +301,16 @@ function processBills() {
 
 function renderHeader() {
   const { start, end, label } = getHeaderRange(headerPeriodMode, headerPeriodOffset);
+
+  // Income and expenses pills: only transactions within the selected period
   const periodTx = getTransactionsInRange(start, end);
   const income   = getTotalInflow(periodTx);
   const expenses = getTotalOutflow(periodTx);
-  const balance  = income - expenses;
+
+  // Net Balance: cumulative running total of ALL transactions up to (and including) the end of the selected period.
+  // This means if you earned 5000 two days ago and spent 200 yesterday, viewing "yesterday" in daily mode shows 4800.
+  const cumulativeTx = state.transactions.filter(t => t.date <= end);
+  const balance = getTotalInflow(cumulativeTx) - getTotalOutflow(cumulativeTx);
 
   const el = document.getElementById('totalBalance');
   el.textContent = formatCurrency(balance);
