@@ -8,7 +8,7 @@
 'use strict';
 
 // ═══════════════════════════════════════════════
-//  1. DEFAULT DATA
+//  1. DEFAULT CATEGORIES
 // ═══════════════════════════════════════════════
 
 const DEFAULT_CATEGORIES = [
@@ -32,22 +32,6 @@ const DEFAULT_CATEGORIES = [
   { id: 'c16', name: 'Other',          type: 'outflow', icon: 'package',      color: '#95a5a6' },
 ];
 
-const SAMPLE_TRANSACTIONS = (() => {
-  const today = new Date();
-  const fmt = (daysAgo) => {
-    const d = new Date(today);
-    d.setDate(d.getDate() - daysAgo);
-    return d.toISOString().split('T')[0];
-  };
-  return [
-    { id: 't1', date: fmt(0), amount: 5000,  type: 'inflow',  categoryId: 'c1', note: 'Weekly allowance' },
-    { id: 't2', date: fmt(1), amount: 180,   type: 'outflow', categoryId: 'c7', note: 'Jollibee lunch' },
-    { id: 't3', date: fmt(2), amount: 60,    type: 'outflow', categoryId: 'c8', note: 'Jeepney + LRT' },
-    { id: 't4', date: fmt(3), amount: 350,   type: 'outflow', categoryId: 'c12', note: 'SM grocery' },
-    { id: 't5', date: fmt(5), amount: 15000, type: 'inflow',  categoryId: 'c2', note: 'Monthly salary' },
-  ];
-})();
-
 // ═══════════════════════════════════════════════
 //  2. STATE & STORAGE
 // ═══════════════════════════════════════════════
@@ -70,22 +54,13 @@ function loadState() {
       // Always use latest category definitions (icon names may have changed)
       state.categories = DEFAULT_CATEGORIES;
     } else {
-      // First run: seed with defaults + sample data
+      // First run: start completely empty — no sample data
       state = {
-        transactions: SAMPLE_TRANSACTIONS,
+        transactions: [],
         categories:   DEFAULT_CATEGORIES,
-        budgets: [
-          { id: 'b1', categoryId: 'c7',  limit: 3000, period: 'monthly' },
-          { id: 'b2', categoryId: 'c8',  limit: 1000, period: 'monthly' },
-          { id: 'b3', categoryId: 'c12', limit: 2000, period: 'monthly' },
-        ],
-        goals: [
-          { id: 'g1', name: 'Emergency Fund', type: 'savings', target: 50000, current: 12000, deadline: '', note: '3-month buffer' },
-        ],
-        bills: [
-          { id: 'bl1', name: 'Netflix',        amount: 169, categoryId: 'c15', frequency: 'monthly', dayOfMonth: 15, autoDeduct: true, lastDeducted: '' },
-          { id: 'bl2', name: 'Globe Postpaid', amount: 999, categoryId: 'c15', frequency: 'monthly', dayOfMonth: 10, autoDeduct: true, lastDeducted: '' },
-        ],
+        budgets:      [],
+        goals:        [],
+        bills:        [],
       };
       saveState();
     }
@@ -196,7 +171,6 @@ function getNetBalance() {
 }
 
 // ─── Lucide Icon Helper ───
-// Returns an <i> tag that Lucide will replace with an SVG on refreshIcons()
 function icon(name, size = 18, style = '') {
   return `<i data-lucide="${name}" style="width:${size}px;height:${size}px;display:block;${style}"></i>`;
 }
