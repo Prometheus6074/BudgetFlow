@@ -1,7 +1,7 @@
 /* ════════════════════════════════════════════════════
    BUDGETFLOW — styles.css
    Color Palette: #1f6f5f | #2fa084 | #6fcf97 | #eeeeee
-   Fonts: Syne (headings) + Plus Jakarta Sans (body)
+   Font: Inter (all weights)
    ════════════════════════════════════════════════════ */
 
 /* ─── CSS Variables ─── */
@@ -32,8 +32,8 @@
   --radius-xl:       28px;
   --nav-height:      72px;
   --header-height:   auto;
-  --font-heading:    'Syne', sans-serif;
-  --font-body:       'Plus Jakarta Sans', sans-serif;
+  --font-heading:    'Inter', system-ui, -apple-system, sans-serif;
+  --font-body:       'Inter', system-ui, -apple-system, sans-serif;
   --transition:      0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -58,6 +58,25 @@ body {
 button { cursor: pointer; border: none; background: none; font-family: inherit; }
 input, select, textarea { font-family: inherit; }
 svg { display: block; }
+
+/* ─── Lucide Icon Base ─── */
+[data-lucide] {
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+.lc-block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pill-icon [data-lucide] {
+  display: inline-block;
+  vertical-align: middle;
+  opacity: 0.85;
+}
 
 /* ─── App Header / Balance ─── */
 .app-header {
@@ -100,8 +119,8 @@ svg { display: block; }
 .brand-name {
   font-family: var(--font-heading);
   font-size: 1.25rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-weight: 800;
+  letter-spacing: -0.03em;
   color: white;
 }
 
@@ -113,6 +132,9 @@ svg { display: block; }
 }
 
 .offline-badge {
+  display: flex;
+  align-items: center;
+  gap: 5px;
   font-size: 0.65rem;
   font-weight: 600;
   background: rgba(255,255,255,0.15);
@@ -150,7 +172,7 @@ svg { display: block; }
   font-size: 2.6rem;
   font-weight: 800;
   color: white;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.04em;
   line-height: 1;
   margin-bottom: 16px;
   transition: color var(--transition);
@@ -175,12 +197,15 @@ svg { display: block; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
+  gap: 4px;
   flex: 1;
   max-width: 110px;
 }
 
 .pill-label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
   font-size: 0.58rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -262,7 +287,7 @@ svg { display: block; }
   font-size: 1rem;
   font-weight: 700;
   color: var(--clr-text);
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
 }
 
 .section-period {
@@ -316,7 +341,12 @@ svg { display: block; }
 }
 
 .snapshot-icon {
-  font-size: 1.1rem;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--clr-secondary);
 }
 
 .snapshot-name {
@@ -462,6 +492,7 @@ svg { display: block; }
   justify-content: center;
   background: var(--clr-surface-2);
   border-radius: 10px;
+  color: var(--clr-secondary);
 }
 
 .budget-cat-name {
@@ -530,6 +561,9 @@ svg { display: block; }
 }
 
 .budget-remaining {
+  display: flex;
+  align-items: center;
+  gap: 5px;
   font-size: 0.72rem;
   margin-top: 6px;
   font-weight: 500;
@@ -557,7 +591,6 @@ svg { display: block; }
 }
 
 .bill-icon {
-  font-size: 1.3rem;
   width: 40px;
   height: 40px;
   background: var(--clr-surface-2);
@@ -566,6 +599,7 @@ svg { display: block; }
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  color: var(--clr-secondary);
 }
 
 .bill-info { flex: 1; min-width: 0; }
@@ -601,7 +635,15 @@ svg { display: block; }
   color: var(--clr-text-muted);
 }
 
+.bill-due.today {
+  color: var(--clr-negative);
+  font-weight: 600;
+}
+
 .bill-auto-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
   font-size: 0.62rem;
   color: var(--clr-secondary);
   font-weight: 600;
@@ -663,7 +705,7 @@ svg { display: block; }
 .goal-type-badge {
   display: inline-flex;
   align-items: center;
-  gap: 3px;
+  gap: 5px;
   font-size: 0.62rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -688,7 +730,7 @@ svg { display: block; }
   font-size: 1.1rem;
   font-weight: 800;
   color: var(--clr-text);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
 }
 
 .goal-actions {
@@ -768,6 +810,9 @@ svg { display: block; }
 .goal-amount-val.highlight { color: var(--clr-secondary); }
 
 .goal-deadline {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   font-size: 0.72rem;
   color: var(--clr-text-muted);
   margin-bottom: 12px;
@@ -775,7 +820,17 @@ svg { display: block; }
 
 .goal-footer {
   display: flex;
+  align-items: center;
   gap: 8px;
+}
+
+.goal-reached {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--clr-secondary);
 }
 
 /* ─── Transaction List ─── */
@@ -807,7 +862,6 @@ svg { display: block; }
 }
 
 .tx-icon {
-  font-size: 1.3rem;
   width: 40px;
   height: 40px;
   border-radius: 12px;
@@ -817,8 +871,8 @@ svg { display: block; }
   flex-shrink: 0;
 }
 
-.tx-icon.inflow  { background: var(--clr-inflow-bg); }
-.tx-icon.outflow { background: var(--clr-outflow-bg); }
+.tx-icon.inflow  { background: var(--clr-inflow-bg);  color: var(--clr-inflow); }
+.tx-icon.outflow { background: var(--clr-outflow-bg); color: var(--clr-outflow); }
 
 .tx-info { flex: 1; min-width: 0; }
 
@@ -850,6 +904,15 @@ svg { display: block; }
   color: var(--clr-text-light);
 }
 
+.tx-auto-tag {
+  font-size: 0.62rem;
+  color: var(--clr-secondary);
+  font-weight: 600;
+  background: rgba(47,160,132,0.10);
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
 .tx-amount {
   font-family: var(--font-heading);
   font-size: 0.95rem;
@@ -874,11 +937,10 @@ svg { display: block; }
   font-family: var(--font-heading);
   font-size: 0.85rem;
   font-weight: 700;
-  color: var(--clr-text);
-  margin-bottom: 16px;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--clr-text-muted);
+  margin-bottom: 16px;
 }
 
 .chart-wrap {
@@ -1109,7 +1171,7 @@ svg { display: block; }
   font-family: var(--font-heading);
   font-size: 0.88rem;
   font-weight: 700;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
   transition: all var(--transition);
   box-shadow: 0 3px 10px rgba(31,111,95,0.30);
 }
@@ -1225,12 +1287,11 @@ svg { display: block; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px 20px 0;
+  padding: 20px 20px 16px;
   position: sticky;
   top: 0;
   background: var(--clr-surface);
   z-index: 1;
-  padding-bottom: 16px;
   border-bottom: 1px solid var(--clr-border-soft);
 }
 
@@ -1239,7 +1300,7 @@ svg { display: block; }
   font-size: 1.1rem;
   font-weight: 800;
   color: var(--clr-text);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
 }
 
 .modal-close {
@@ -1416,11 +1477,12 @@ svg { display: block; }
   align-items: center;
   padding: 32px 20px;
   text-align: center;
+  gap: 8px;
 }
 
 .empty-icon {
-  font-size: 2.5rem;
-  margin-bottom: 8px;
+  color: var(--clr-text-light);
+  margin-bottom: 4px;
 }
 
 .empty-state p {

@@ -2,6 +2,7 @@
    BUDGETFLOW — app.js
    Features: Budget Limits, Goals, Charts, Bills,
    Always-visible Balance, Manual Entry, Categories
+   Icons: Lucide (https://lucide.dev)
    ════════════════════════════════════════════════════ */
 
 'use strict';
@@ -12,23 +13,23 @@
 
 const DEFAULT_CATEGORIES = [
   // Inflows
-  { id: 'c1',  name: 'Allowance',         type: 'inflow',  icon: '💰', color: '#2fa084' },
-  { id: 'c2',  name: 'Salary',            type: 'inflow',  icon: '💼', color: '#1f6f5f' },
-  { id: 'c3',  name: 'Freelance',         type: 'inflow',  icon: '💻', color: '#6fcf97' },
-  { id: 'c4',  name: 'Investment',        type: 'inflow',  icon: '📈', color: '#27ae60' },
-  { id: 'c5',  name: 'Gift',              type: 'inflow',  icon: '🎁', color: '#2ecc71' },
-  { id: 'c6',  name: 'Other Income',      type: 'inflow',  icon: '➕', color: '#52b788' },
+  { id: 'c1',  name: 'Allowance',      type: 'inflow',  icon: 'wallet',       color: '#2fa084' },
+  { id: 'c2',  name: 'Salary',         type: 'inflow',  icon: 'briefcase',    color: '#1f6f5f' },
+  { id: 'c3',  name: 'Freelance',      type: 'inflow',  icon: 'laptop',       color: '#6fcf97' },
+  { id: 'c4',  name: 'Investment',     type: 'inflow',  icon: 'trending-up',  color: '#27ae60' },
+  { id: 'c5',  name: 'Gift',           type: 'inflow',  icon: 'gift',         color: '#2ecc71' },
+  { id: 'c6',  name: 'Other Income',   type: 'inflow',  icon: 'plus-circle',  color: '#52b788' },
   // Outflows
-  { id: 'c7',  name: 'Food',              type: 'outflow', icon: '🍔', color: '#e74c3c' },
-  { id: 'c8',  name: 'Transportation',    type: 'outflow', icon: '🚌', color: '#e67e22' },
-  { id: 'c9',  name: 'Housing',           type: 'outflow', icon: '🏠', color: '#9b59b6' },
-  { id: 'c10', name: 'Utilities',         type: 'outflow', icon: '⚡', color: '#f39c12' },
-  { id: 'c11', name: 'Entertainment',     type: 'outflow', icon: '🎮', color: '#e91e63' },
-  { id: 'c12', name: 'Shopping',          type: 'outflow', icon: '🛍️', color: '#ff5722' },
-  { id: 'c13', name: 'Healthcare',        type: 'outflow', icon: '💊', color: '#3498db' },
-  { id: 'c14', name: 'Education',         type: 'outflow', icon: '📚', color: '#8e44ad' },
-  { id: 'c15', name: 'Subscriptions',     type: 'outflow', icon: '📱', color: '#16a085' },
-  { id: 'c16', name: 'Other',             type: 'outflow', icon: '📦', color: '#95a5a6' },
+  { id: 'c7',  name: 'Food',           type: 'outflow', icon: 'utensils',     color: '#e74c3c' },
+  { id: 'c8',  name: 'Transportation', type: 'outflow', icon: 'bus',          color: '#e67e22' },
+  { id: 'c9',  name: 'Housing',        type: 'outflow', icon: 'home',         color: '#9b59b6' },
+  { id: 'c10', name: 'Utilities',      type: 'outflow', icon: 'zap',          color: '#f39c12' },
+  { id: 'c11', name: 'Entertainment',  type: 'outflow', icon: 'gamepad-2',    color: '#e91e63' },
+  { id: 'c12', name: 'Shopping',       type: 'outflow', icon: 'shopping-bag', color: '#ff5722' },
+  { id: 'c13', name: 'Healthcare',     type: 'outflow', icon: 'pill',         color: '#3498db' },
+  { id: 'c14', name: 'Education',      type: 'outflow', icon: 'book-open',    color: '#8e44ad' },
+  { id: 'c15', name: 'Subscriptions',  type: 'outflow', icon: 'smartphone',   color: '#16a085' },
+  { id: 'c16', name: 'Other',          type: 'outflow', icon: 'package',      color: '#95a5a6' },
 ];
 
 const SAMPLE_TRANSACTIONS = (() => {
@@ -39,11 +40,11 @@ const SAMPLE_TRANSACTIONS = (() => {
     return d.toISOString().split('T')[0];
   };
   return [
-    { id: 't1', date: fmt(0), amount: 5000, type: 'inflow',  categoryId: 'c1', note: 'Weekly allowance' },
-    { id: 't2', date: fmt(1), amount: 180,  type: 'outflow', categoryId: 'c7', note: 'Jollibee lunch' },
-    { id: 't3', date: fmt(2), amount: 60,   type: 'outflow', categoryId: 'c8', note: 'Jeepney + LRT' },
-    { id: 't4', date: fmt(3), amount: 350,  type: 'outflow', categoryId: 'c12', note: 'SM grocery' },
-    { id: 't5', date: fmt(5), amount: 15000,type: 'inflow',  categoryId: 'c2', note: 'Monthly salary' },
+    { id: 't1', date: fmt(0), amount: 5000,  type: 'inflow',  categoryId: 'c1', note: 'Weekly allowance' },
+    { id: 't2', date: fmt(1), amount: 180,   type: 'outflow', categoryId: 'c7', note: 'Jollibee lunch' },
+    { id: 't3', date: fmt(2), amount: 60,    type: 'outflow', categoryId: 'c8', note: 'Jeepney + LRT' },
+    { id: 't4', date: fmt(3), amount: 350,   type: 'outflow', categoryId: 'c12', note: 'SM grocery' },
+    { id: 't5', date: fmt(5), amount: 15000, type: 'inflow',  categoryId: 'c2', note: 'Monthly salary' },
   ];
 })();
 
@@ -66,25 +67,23 @@ function loadState() {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
       state = JSON.parse(raw);
-      // Migration: ensure categories always exist
-      if (!state.categories || state.categories.length === 0) {
-        state.categories = DEFAULT_CATEGORIES;
-      }
+      // Always use latest category definitions (icon names may have changed)
+      state.categories = DEFAULT_CATEGORIES;
     } else {
       // First run: seed with defaults + sample data
       state = {
         transactions: SAMPLE_TRANSACTIONS,
         categories:   DEFAULT_CATEGORIES,
         budgets: [
-          { id: 'b1', categoryId: 'c7', limit: 3000, period: 'monthly' },
-          { id: 'b2', categoryId: 'c8', limit: 1000, period: 'monthly' },
+          { id: 'b1', categoryId: 'c7',  limit: 3000, period: 'monthly' },
+          { id: 'b2', categoryId: 'c8',  limit: 1000, period: 'monthly' },
           { id: 'b3', categoryId: 'c12', limit: 2000, period: 'monthly' },
         ],
         goals: [
           { id: 'g1', name: 'Emergency Fund', type: 'savings', target: 50000, current: 12000, deadline: '', note: '3-month buffer' },
         ],
         bills: [
-          { id: 'bl1', name: 'Netflix', amount: 169, categoryId: 'c15', frequency: 'monthly', dayOfMonth: 15, autoDeduct: true, lastDeducted: '' },
+          { id: 'bl1', name: 'Netflix',        amount: 169, categoryId: 'c15', frequency: 'monthly', dayOfMonth: 15, autoDeduct: true, lastDeducted: '' },
           { id: 'bl2', name: 'Globe Postpaid', amount: 999, categoryId: 'c15', frequency: 'monthly', dayOfMonth: 10, autoDeduct: true, lastDeducted: '' },
         ],
       };
@@ -116,7 +115,7 @@ function formatCurrency(amount, showSign = false) {
   const abs = Math.abs(amount);
   const formatted = abs.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   const sign = showSign && amount > 0 ? '+' : (amount < 0 ? '-' : '');
-  return sign + '₱' + formatted;
+  return sign + '\u20B1' + formatted;
 }
 
 function formatCurrencyShort(amount) {
@@ -125,7 +124,7 @@ function formatCurrencyShort(amount) {
   if (abs >= 1000000) formatted = (abs / 1000000).toFixed(1) + 'M';
   else if (abs >= 1000) formatted = (abs / 1000).toFixed(1) + 'K';
   else formatted = abs.toLocaleString('en-PH', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-  return (amount < 0 ? '-' : '') + '₱' + formatted;
+  return (amount < 0 ? '-' : '') + '\u20B1' + formatted;
 }
 
 function formatDate(dateStr) {
@@ -145,7 +144,7 @@ function todayStr() {
 }
 
 function getCategory(id) {
-  return state.categories.find(c => c.id === id) || { name: 'Unknown', icon: '📦', color: '#95a5a6', type: 'outflow' };
+  return state.categories.find(c => c.id === id) || { name: 'Unknown', icon: 'package', color: '#95a5a6', type: 'outflow' };
 }
 
 function getPeriodRange(period) {
@@ -194,6 +193,18 @@ function getTotalOutflow(transactions) {
 
 function getNetBalance() {
   return state.transactions.reduce((s, t) => t.type === 'inflow' ? s + t.amount : s - t.amount, 0);
+}
+
+// ─── Lucide Icon Helper ───
+// Returns an <i> tag that Lucide will replace with an SVG on refreshIcons()
+function icon(name, size = 18, style = '') {
+  return `<i data-lucide="${name}" style="width:${size}px;height:${size}px;display:block;${style}"></i>`;
+}
+
+function refreshIcons() {
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  }
 }
 
 // ═══════════════════════════════════════════════
@@ -246,9 +257,8 @@ function renderHeader() {
   el.textContent = formatCurrency(balance);
   el.classList.toggle('negative', balance < 0);
 
-  // This month stats
   const { start, end } = getPeriodRange('monthly');
-  const monthTx = getTransactionsInRange(start, end);
+  const monthTx  = getTransactionsInRange(start, end);
   const income   = getTotalInflow(monthTx);
   const expenses = getTotalOutflow(monthTx);
   const bills    = state.bills.filter(b => b.autoDeduct && b.frequency === 'monthly').reduce((s, b) => s + b.amount, 0);
@@ -257,7 +267,6 @@ function renderHeader() {
   document.getElementById('totalExpenses').textContent = formatCurrencyShort(expenses);
   document.getElementById('totalBills').textContent    = formatCurrencyShort(bills);
 
-  // Date
   const now = new Date();
   document.getElementById('headerDate').textContent = now.toLocaleDateString('en-PH', { weekday: 'short', month: 'long', day: 'numeric' });
 }
@@ -291,7 +300,7 @@ function renderBudgetSnapshot() {
     return `
       <div class="snapshot-card">
         <div class="snapshot-cat">
-          <span class="snapshot-icon">${cat.icon}</span>
+          <div class="snapshot-icon">${icon(cat.icon, 16)}</div>
           <span class="snapshot-name">${cat.name}</span>
         </div>
         <div class="snapshot-amounts">
@@ -303,6 +312,7 @@ function renderBudgetSnapshot() {
         </div>
       </div>`;
   }).join('');
+  refreshIcons();
 }
 
 function renderGoalsSnapshot() {
@@ -337,27 +347,34 @@ function renderRecentTransactions() {
   const container = document.getElementById('recentTransactions');
   const sorted = [...state.transactions].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 8);
   if (sorted.length === 0) {
-    container.innerHTML = `<div class="empty-state"><p class="empty-icon">💸</p><p>No transactions yet. Tap <strong>+</strong> to add one.</p></div>`;
+    container.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">${icon('banknote', 36)}</div>
+        <p>No transactions yet. Tap <strong>+</strong> to add one.</p>
+      </div>`;
+    refreshIcons();
     return;
   }
   container.innerHTML = sorted.map(t => renderTransactionItem(t)).join('');
   container.querySelectorAll('.tx-item').forEach(el => {
     el.addEventListener('click', () => openEditTransaction(el.dataset.id));
   });
+  refreshIcons();
 }
 
 function renderTransactionItem(t) {
   const cat = getCategory(t.categoryId);
   const isIn = t.type === 'inflow';
+  const isAuto = t.note && t.note.startsWith('[Auto]');
   return `
     <div class="tx-item" data-id="${t.id}">
-      <div class="tx-icon ${t.type}">${cat.icon}</div>
+      <div class="tx-icon ${t.type}">${icon(cat.icon, 18)}</div>
       <div class="tx-info">
         <div class="tx-name">${t.note || cat.name}</div>
         <div class="tx-meta">
           <span class="tx-category">${cat.name}</span>
           <span class="tx-date">${formatDateShort(t.date)}</span>
-          ${t.note && t.note.startsWith('[Auto]') ? '<span style="font-size:0.62rem;color:var(--clr-secondary);font-weight:600;">Auto</span>' : ''}
+          ${isAuto ? '<span class="tx-auto-tag">Auto</span>' : ''}
         </div>
       </div>
       <span class="tx-amount ${t.type}">${isIn ? '+' : '-'}${formatCurrency(t.amount)}</span>
@@ -376,7 +393,12 @@ function renderBudgetList() {
   const periodTx = getTransactionsInRange(start, end);
 
   if (state.budgets.length === 0) {
-    container.innerHTML = `<div class="empty-state"><p class="empty-icon">🎯</p><p>Set spending limits per category to track your budget.</p></div>`;
+    container.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">${icon('target', 36)}</div>
+        <p>Set spending limits per category to track your budget.</p>
+      </div>`;
+    refreshIcons();
     return;
   }
 
@@ -396,15 +418,15 @@ function renderBudgetList() {
       <div class="budget-item">
         <div class="budget-item-header">
           <div class="budget-cat">
-            <div class="budget-icon">${cat.icon}</div>
+            <div class="budget-icon">${icon(cat.icon, 18)}</div>
             <div>
               <div class="budget-cat-name">${cat.name}</div>
               <span class="budget-period-tag">${b.period}</span>
             </div>
           </div>
           <div class="budget-item-actions">
-            <button class="action-btn edit" onclick="openEditBudget('${b.id}')" title="Edit">✎</button>
-            <button class="action-btn delete" onclick="deleteBudget('${b.id}')" title="Delete">✕</button>
+            <button class="action-btn edit" onclick="openEditBudget('${b.id}')" title="Edit">&#x270E;</button>
+            <button class="action-btn delete" onclick="deleteBudget('${b.id}')" title="Delete">&#x2715;</button>
           </div>
         </div>
         <div class="budget-amounts">
@@ -418,10 +440,13 @@ function renderBudgetList() {
           <div class="progress-fill ${cls}" style="width:${pct}%"></div>
         </div>
         <div class="budget-remaining ${remaining < 0 ? 'over' : 'ok'}">
-          ${remaining < 0 ? `⚠ Over budget by ${formatCurrency(Math.abs(remaining))}` : `${formatCurrency(remaining)} remaining (${Math.round(pct)}% used)`}
+          ${remaining < 0
+            ? `${icon('alert-triangle', 13)} Over budget by ${formatCurrency(Math.abs(remaining))}`
+            : `${formatCurrency(remaining)} remaining (${Math.round(pct)}% used)`}
         </div>
       </div>`;
   }).join('');
+  refreshIcons();
 }
 
 // ═══════════════════════════════════════════════
@@ -431,7 +456,12 @@ function renderBudgetList() {
 function renderBillsList() {
   const container = document.getElementById('billsList');
   if (state.bills.length === 0) {
-    container.innerHTML = `<div class="empty-state"><p class="empty-icon">🧾</p><p>Add recurring bills to auto-track monthly or daily deductions.</p></div>`;
+    container.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">${icon('receipt', 36)}</div>
+        <p>Add recurring bills to auto-track monthly or daily deductions.</p>
+      </div>`;
+    refreshIcons();
     return;
   }
   const sorted = [...state.bills].sort((a, b) => (a.dayOfMonth || 0) - (b.dayOfMonth || 0));
@@ -439,28 +469,30 @@ function renderBillsList() {
     const cat = getCategory(b.categoryId);
     const today = new Date().getDate();
     const daysUntil = b.frequency === 'monthly' && b.dayOfMonth ? b.dayOfMonth - today : null;
+    const isToday = daysUntil === 0;
     const dueLabel = b.frequency === 'daily' ? 'Daily'
-      : daysUntil === 0 ? '🔴 Due today'
-      : daysUntil < 0  ? `Day ${b.dayOfMonth}`
+      : isToday      ? 'Due today'
+      : daysUntil < 0 ? `Day ${b.dayOfMonth}`
       : `In ${daysUntil}d (Day ${b.dayOfMonth})`;
     return `
       <div class="bill-item">
-        <div class="bill-icon">${cat.icon}</div>
+        <div class="bill-icon">${icon(cat.icon, 20)}</div>
         <div class="bill-info">
           <div class="bill-name">${b.name}</div>
           <div class="bill-meta">
             <span class="bill-freq-tag">${b.frequency}</span>
-            <span class="bill-due">${dueLabel}</span>
-            ${b.autoDeduct ? '<span class="bill-auto-tag">⚡ Auto</span>' : ''}
+            <span class="bill-due${isToday ? ' today' : ''}">${dueLabel}</span>
+            ${b.autoDeduct ? `<span class="bill-auto-tag">${icon('zap', 10)} Auto</span>` : ''}
           </div>
         </div>
         <span class="bill-amount">${formatCurrency(b.amount)}</span>
         <div class="bill-actions">
-          <button class="action-btn edit" onclick="openEditBill('${b.id}')" title="Edit">✎</button>
-          <button class="action-btn delete" onclick="deleteBill('${b.id}')" title="Delete">✕</button>
+          <button class="action-btn edit" onclick="openEditBill('${b.id}')" title="Edit">&#x270E;</button>
+          <button class="action-btn delete" onclick="deleteBill('${b.id}')" title="Delete">&#x2715;</button>
         </div>
       </div>`;
   }).join('');
+  refreshIcons();
 }
 
 // ═══════════════════════════════════════════════
@@ -475,7 +507,12 @@ function renderGoalsList() {
   if (activeGoalFilter !== 'all') goals = goals.filter(g => g.type === activeGoalFilter);
 
   if (goals.length === 0) {
-    container.innerHTML = `<div class="empty-state"><p class="empty-icon">🏆</p><p>No goals yet. Add one above.</p></div>`;
+    container.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">${icon('trophy', 36)}</div>
+        <p>No goals yet. Add one above.</p>
+      </div>`;
+    refreshIcons();
     return;
   }
 
@@ -485,21 +522,27 @@ function renderGoalsList() {
     const circumference = 2 * Math.PI * 34;
     const dash = (pct / 100) * circumference;
     const arcColor = g.type === 'debt' ? '#e74c3c' : 'var(--clr-secondary)';
-    const deadlineStr = g.deadline ? `Target: ${formatDate(g.deadline)}` : '';
+    const deadlineStr = g.deadline ? formatDate(g.deadline) : '';
     const daysLeft = g.deadline ? Math.ceil((new Date(g.deadline) - new Date()) / 86400000) : null;
-    const deadlineWarning = daysLeft !== null && daysLeft < 30 ? ` (${daysLeft > 0 ? daysLeft + 'd left' : 'overdue!'})` : '';
+    const deadlineWarning = daysLeft !== null && daysLeft < 30
+      ? ` (${daysLeft > 0 ? daysLeft + 'd left' : 'overdue!'})`
+      : '';
+    const badgeIcon = g.type === 'savings' ? 'piggy-bank' : 'trending-down';
 
     return `
       <div class="goal-card ${g.type}">
         <div class="goal-header">
           <div class="goal-title-wrap">
-            <div class="goal-type-badge ${g.type}">${g.type === 'savings' ? '💰 Savings' : '📉 Debt Payoff'}</div>
+            <div class="goal-type-badge ${g.type}">
+              ${icon(badgeIcon, 10)}
+              ${g.type === 'savings' ? 'Savings' : 'Debt Payoff'}
+            </div>
             <div class="goal-name">${g.name}</div>
             ${g.note ? `<div style="font-size:0.72rem;color:var(--clr-text-muted);margin-top:3px;">${g.note}</div>` : ''}
           </div>
           <div class="goal-actions">
-            <button class="action-btn edit" onclick="openEditGoal('${g.id}')" title="Edit">✎</button>
-            <button class="action-btn delete" onclick="deleteGoal('${g.id}')" title="Delete">✕</button>
+            <button class="action-btn edit" onclick="openEditGoal('${g.id}')" title="Edit">&#x270E;</button>
+            <button class="action-btn delete" onclick="deleteGoal('${g.id}')" title="Delete">&#x2715;</button>
           </div>
         </div>
         <div class="goal-progress-wrap">
@@ -529,13 +572,18 @@ function renderGoalsList() {
             </div>
           </div>
         </div>
-        ${deadlineStr ? `<div class="goal-deadline">📅 ${deadlineStr}${deadlineWarning}</div>` : ''}
+        ${deadlineStr ? `
+          <div class="goal-deadline">
+            ${icon('calendar', 13)}
+            Target: ${deadlineStr}${deadlineWarning}
+          </div>` : ''}
         <div class="goal-footer">
           <button class="btn-contrib" onclick="openGoalContrib('${g.id}')">+ Update Progress</button>
-          ${pct >= 100 ? '<span style="font-size:0.8rem;font-weight:700;color:var(--clr-secondary);">🎉 Goal Reached!</span>' : ''}
+          ${pct >= 100 ? `<span class="goal-reached">${icon('check-circle', 15)} Goal Reached!</span>` : ''}
         </div>
       </div>`;
   }).join('');
+  refreshIcons();
 }
 
 // ═══════════════════════════════════════════════
@@ -612,8 +660,8 @@ function renderBarChart() {
     const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
     months.push({ label: d.toLocaleDateString('en-PH', { month: 'short' }), year: d.getFullYear(), month: d.getMonth() });
   }
-  const incomes   = months.map(m => state.transactions.filter(t => t.type === 'inflow'  && new Date(t.date + 'T00:00:00').getMonth() === m.month && new Date(t.date + 'T00:00:00').getFullYear() === m.year).reduce((s, t) => s + t.amount, 0));
-  const expenses  = months.map(m => state.transactions.filter(t => t.type === 'outflow' && new Date(t.date + 'T00:00:00').getMonth() === m.month && new Date(t.date + 'T00:00:00').getFullYear() === m.year).reduce((s, t) => s + t.amount, 0));
+  const incomes  = months.map(m => state.transactions.filter(t => t.type === 'inflow'  && new Date(t.date + 'T00:00:00').getMonth() === m.month && new Date(t.date + 'T00:00:00').getFullYear() === m.year).reduce((s, t) => s + t.amount, 0));
+  const expenses = months.map(m => state.transactions.filter(t => t.type === 'outflow' && new Date(t.date + 'T00:00:00').getMonth() === m.month && new Date(t.date + 'T00:00:00').getFullYear() === m.year).reduce((s, t) => s + t.amount, 0));
 
   destroyChart(chartBar);
   const ctx = document.getElementById('incomeExpenseChart').getContext('2d');
@@ -622,17 +670,17 @@ function renderBarChart() {
     data: {
       labels: months.map(m => m.label),
       datasets: [
-        { label: 'Income', data: incomes, backgroundColor: 'rgba(47,160,132,0.80)', borderRadius: 6, borderSkipped: false },
-        { label: 'Expenses', data: expenses, backgroundColor: 'rgba(192,57,43,0.70)', borderRadius: 6, borderSkipped: false },
+        { label: 'Income',   data: incomes,  backgroundColor: 'rgba(47,160,132,0.80)', borderRadius: 6, borderSkipped: false },
+        { label: 'Expenses', data: expenses, backgroundColor: 'rgba(192,57,43,0.70)',  borderRadius: 6, borderSkipped: false },
       ],
     },
     options: {
       responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { labels: { font: { size: 11 }, color: '#5a7268', boxWidth: 12, padding: 12 } },
+      plugins: { legend: { labels: { font: { size: 11, family: 'Inter' }, color: '#5a7268', boxWidth: 12, padding: 12 } },
         tooltip: { callbacks: { label: (ctx) => ` ${ctx.dataset.label}: ${formatCurrency(ctx.parsed.y)}` } } },
       scales: {
-        y: { ticks: { callback: v => formatCurrencyShort(v), color: '#9ab5ad', font: { size: 10 } }, grid: { color: 'rgba(0,0,0,0.05)' } },
-        x: { ticks: { color: '#9ab5ad', font: { size: 10 } }, grid: { display: false } },
+        y: { ticks: { callback: v => formatCurrencyShort(v), color: '#9ab5ad', font: { size: 10, family: 'Inter' } }, grid: { color: 'rgba(0,0,0,0.05)' } },
+        x: { ticks: { color: '#9ab5ad', font: { size: 10, family: 'Inter' } }, grid: { display: false } },
       },
     },
   });
@@ -649,7 +697,6 @@ function renderLineChart() {
     points.push({ x: t.date, y: running });
   });
 
-  // Deduplicate by date (keep last)
   const byDate = {};
   points.forEach(p => { byDate[p.x] = p.y; });
   const labels = Object.keys(byDate).slice(-30);
@@ -672,8 +719,8 @@ function renderLineChart() {
       responsive: true, maintainAspectRatio: false,
       plugins: { legend: { display: false }, tooltip: { callbacks: { label: (ctx) => ` Balance: ${formatCurrency(ctx.parsed.y)}` } } },
       scales: {
-        y: { ticks: { callback: v => formatCurrencyShort(v), color: '#9ab5ad', font: { size: 10 } }, grid: { color: 'rgba(0,0,0,0.05)' } },
-        x: { ticks: { color: '#9ab5ad', font: { size: 10 }, maxTicksLimit: 8 }, grid: { display: false } },
+        y: { ticks: { callback: v => formatCurrencyShort(v), color: '#9ab5ad', font: { size: 10, family: 'Inter' } }, grid: { color: 'rgba(0,0,0,0.05)' } },
+        x: { ticks: { color: '#9ab5ad', font: { size: 10, family: 'Inter' }, maxTicksLimit: 8 }, grid: { display: false } },
       },
     },
   });
@@ -696,13 +743,14 @@ function renderAllTransactions(txs) {
   container.querySelectorAll('.tx-item').forEach(el => {
     el.addEventListener('click', () => openEditTransaction(el.dataset.id));
   });
+  refreshIcons();
 }
 
 function populateCategoryFilters() {
   const sel = document.getElementById('txCategoryFilter');
   const used = [...new Set(state.transactions.map(t => t.categoryId))];
   sel.innerHTML = '<option value="">All Categories</option>' +
-    used.map(cid => { const cat = getCategory(cid); return `<option value="${cid}">${cat.icon} ${cat.name}</option>`; }).join('');
+    used.map(cid => { const cat = getCategory(cid); return `<option value="${cid}">${cat.name}</option>`; }).join('');
 }
 
 // ═══════════════════════════════════════════════
@@ -727,7 +775,6 @@ function closeModal(id) {
   b.classList.remove('visible');
   setTimeout(() => {
     m.classList.add('hidden');
-    // Only hide backdrop if no modals are open
     if (!document.querySelector('.modal.visible')) b.classList.add('hidden');
   }, 320);
 }
@@ -790,7 +837,7 @@ function setTransType(type) {
 function populateTransCategorySelect(type, selected = '') {
   const sel = document.getElementById('transCategory');
   const cats = state.categories.filter(c => c.type === type);
-  sel.innerHTML = cats.map(c => `<option value="${c.id}" ${c.id === selected ? 'selected' : ''}>${c.icon} ${c.name}</option>`).join('');
+  sel.innerHTML = cats.map(c => `<option value="${c.id}" ${c.id === selected ? 'selected' : ''}>${c.name}</option>`).join('');
 }
 
 function saveTransaction() {
@@ -839,7 +886,7 @@ function openAddBudget() {
 
   const outflowCats = state.categories.filter(c => c.type === 'outflow');
   document.getElementById('budgetCategory').innerHTML = outflowCats.map(c =>
-    `<option value="${c.id}">${c.icon} ${c.name}</option>`).join('');
+    `<option value="${c.id}">${c.name}</option>`).join('');
 
   document.querySelectorAll('#budgetModal .type-btn[data-bperiod]').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.bperiod === currentBudgetPeriod);
@@ -855,7 +902,7 @@ function openEditBudget(id) {
 
   const outflowCats = state.categories.filter(c => c.type === 'outflow');
   document.getElementById('budgetCategory').innerHTML = outflowCats.map(c =>
-    `<option value="${c.id}" ${c.id === b.categoryId ? 'selected' : ''}>${c.icon} ${c.name}</option>`).join('');
+    `<option value="${c.id}" ${c.id === b.categoryId ? 'selected' : ''}>${c.name}</option>`).join('');
   document.getElementById('budgetLimit').value = b.limit;
   document.getElementById('budgetEditId').value = id;
   document.getElementById('budgetPeriodVal').value = b.period;
@@ -943,8 +990,8 @@ function setGoalType(type) {
   document.querySelectorAll('#goalTypeToggle .type-btn').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.gtype === type);
   });
-  document.getElementById('goalTargetLabel').textContent = type === 'debt' ? 'Total Debt Amount (₱)' : 'Target Amount (₱)';
-  document.getElementById('goalCurrentLabel').textContent = type === 'debt' ? 'Amount Paid Off (₱)' : 'Amount Saved (₱)';
+  document.getElementById('goalTargetLabel').textContent = type === 'debt' ? 'Total Debt Amount (\u20B1)' : 'Target Amount (\u20B1)';
+  document.getElementById('goalCurrentLabel').textContent = type === 'debt' ? 'Amount Paid Off (\u20B1)' : 'Amount Saved (\u20B1)';
 }
 
 function saveGoal() {
@@ -985,7 +1032,9 @@ function openGoalContrib(id) {
   if (!g) return;
   document.getElementById('goalContribId').value = id;
   document.getElementById('goalContribTitle').textContent = `Update: ${g.name}`;
-  document.getElementById('goalContribLabel').textContent = g.type === 'debt' ? `Amount Paid Off (₱) — currently ${formatCurrency(g.current)}` : `Amount Saved (₱) — currently ${formatCurrency(g.current)}`;
+  document.getElementById('goalContribLabel').textContent = g.type === 'debt'
+    ? `Amount Paid Off (\u20B1) — currently ${formatCurrency(g.current)}`
+    : `Amount Saved (\u20B1) — currently ${formatCurrency(g.current)}`;
   document.getElementById('goalContribAmount').value = g.current;
   openModal('goalContribModal');
 }
@@ -997,7 +1046,7 @@ function saveGoalContrib() {
   const idx = state.goals.findIndex(g => g.id === id);
   if (idx !== -1) {
     state.goals[idx].current = amount;
-    if (amount >= state.goals[idx].target) showToast(`🎉 Goal "${state.goals[idx].name}" achieved!`, 'success');
+    if (amount >= state.goals[idx].target) showToast(`Goal "${state.goals[idx].name}" achieved!`, 'success');
     else showToast('Progress updated');
     saveState();
     closeModal('goalContribModal');
@@ -1028,7 +1077,7 @@ function openAddBill() {
 
   const outflowCats = state.categories.filter(c => c.type === 'outflow');
   document.getElementById('billCategory').innerHTML = outflowCats.map(c =>
-    `<option value="${c.id}">${c.icon} ${c.name}</option>`).join('');
+    `<option value="${c.id}">${c.name}</option>`).join('');
   openModal('billModal');
 }
 
@@ -1048,7 +1097,7 @@ function openEditBill(id) {
 
   const outflowCats = state.categories.filter(c => c.type === 'outflow');
   document.getElementById('billCategory').innerHTML = outflowCats.map(c =>
-    `<option value="${c.id}" ${c.id === b.categoryId ? 'selected' : ''}>${c.icon} ${c.name}</option>`).join('');
+    `<option value="${c.id}" ${c.id === b.categoryId ? 'selected' : ''}>${c.name}</option>`).join('');
   openModal('billModal');
 }
 
@@ -1122,6 +1171,7 @@ function renderAll() {
   if (activeTab === 'budget')  { renderBudgetList(); renderBillsList(); }
   if (activeTab === 'goals')   { renderGoalsList(); }
   if (activeTab === 'reports') { populateCategoryFilters(); renderReports(); }
+  refreshIcons();
 }
 
 // ═══════════════════════════════════════════════
@@ -1135,14 +1185,14 @@ function bindEvents() {
     btn.addEventListener('click', () => switchTab(btn.dataset.tab));
   });
 
-  // Link buttons (e.g. "See all →" on dashboard)
+  // Link buttons (e.g. "See all" on dashboard)
   document.querySelectorAll('[data-tab]').forEach(btn => {
     if (!btn.classList.contains('nav-item') && !btn.classList.contains('toggle-pill') && !btn.classList.contains('filter-chip')) {
       btn.addEventListener('click', () => switchTab(btn.dataset.tab));
     }
   });
 
-  // FAB + Add buttons
+  // FAB
   document.getElementById('addTransFab').addEventListener('click', () => openAddTransaction('outflow'));
 
   // Sub tabs (Budget)
@@ -1185,11 +1235,9 @@ function bindEvents() {
     });
   });
 
-  // Add Budget btn
+  // Add buttons
   document.getElementById('addBudgetBtn').addEventListener('click', openAddBudget);
-  // Add Bill btn
   document.getElementById('addBillBtn').addEventListener('click', openAddBill);
-  // Add Goal btn
   document.getElementById('addGoalBtn').addEventListener('click', openAddGoal);
 
   // Modal close buttons
@@ -1202,9 +1250,7 @@ function bindEvents() {
 
   // Transaction type toggle
   document.querySelectorAll('#transTypeToggle .type-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      setTransType(btn.dataset.type);
-    });
+    btn.addEventListener('click', () => setTransType(btn.dataset.type));
   });
 
   // Budget period toggle (in modal)
@@ -1236,8 +1282,7 @@ function bindEvents() {
 
   // Transaction filters
   document.getElementById('filterTransBtn').addEventListener('click', () => {
-    const bar = document.getElementById('txFilterBar');
-    bar.classList.toggle('hidden');
+    document.getElementById('txFilterBar').classList.toggle('hidden');
   });
   document.getElementById('txCategoryFilter').addEventListener('change', () => {
     const { start, end } = getReportRange(activeReportPeriod);
@@ -1270,7 +1315,7 @@ function bindEvents() {
 
 function init() {
   loadState();
-  processBills();   // Auto-deduct any due bills
+  processBills();
   bindEvents();
   renderAll();
 }
