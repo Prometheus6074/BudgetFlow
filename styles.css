@@ -44,19 +44,44 @@ html {
   font-size: 16px;
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
+  /* Lock to viewport — scroll lives inside .main-content only */
+  height: 100%;
+  overflow: hidden;
 }
 
 body {
   font-family: var(--font-body);
   background: var(--clr-bg);
   color: var(--clr-text);
-  min-height: 100dvh;
-  overflow-x: hidden;
+  /* Flex column: header / content / nav are plain flex items.
+     Nothing scrolls at the page level — only .main-content scrolls. */
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
   -webkit-font-smoothing: antialiased;
+  /* Disable long-press text selection everywhere */
+  user-select: none;
+  -webkit-user-select: none;
+  /* Remove the blue tap-highlight rectangle on Android */
+  -webkit-tap-highlight-color: transparent;
 }
 
-button { cursor: pointer; border: none; background: none; font-family: inherit; }
-input, select, textarea { font-family: inherit; }
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+  /* No blue square on tap, no focus ring */
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+}
+input, select, textarea {
+  font-family: inherit;
+  /* Re-enable selection inside form fields */
+  user-select: text;
+  -webkit-user-select: text;
+}
 svg { display: block; }
 
 /* ─── Lucide Icon Base ─── */
@@ -83,10 +108,12 @@ svg { display: block; }
   background: linear-gradient(160deg, var(--clr-primary) 0%, var(--clr-secondary) 100%);
   color: white;
   padding: 16px 20px 20px;
-  position: sticky;
-  top: 0;
+  /* Flex item — no position:sticky needed; body is flex-column so this
+     never moves regardless of what main-content scrolls. */
+  flex-shrink: 0;
   z-index: 100;
   box-shadow: 0 4px 20px rgba(31, 111, 95, 0.30);
+  overflow: hidden;
 }
 
 .header-top {
@@ -274,11 +301,16 @@ svg { display: block; }
 
 /* ─── Main Content ─── */
 .main-content {
-  padding: 20px 16px;
-  padding-bottom: calc(var(--nav-height) + 24px);
-  min-height: calc(100dvh - 180px);
+  /* The ONLY scrolling element — flex:1 fills space between header and nav */
+  flex: 1 1 0%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  padding: 20px 16px 24px;
   max-width: 540px;
   margin: 0 auto;
+  /* Width must be 100% when max-width centres it in a flex container */
+  width: 100%;
 }
 
 /* ─── Tab System ─── */
@@ -1139,10 +1171,10 @@ svg { display: block; }
 
 /* ─── Bottom Navigation ─── */
 .bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  /* Flex item — always pinned at bottom of the flex-column body.
+     No position:fixed needed, so no WebView / keyboard-resize bugs. */
+  flex-shrink: 0;
+  width: 100%;
   height: var(--nav-height);
   background: var(--clr-surface);
   display: flex;
@@ -1581,8 +1613,8 @@ svg { display: block; }
 /* ─── Responsive ─── */
 @media (min-width: 540px) {
   .main-content {
-    padding: 24px 20px;
-    padding-bottom: calc(var(--nav-height) + 32px);
+    /* Nav is a flex item in flow, so no extra bottom padding needed */
+    padding: 24px 20px 32px;
   }
   
   .modal {

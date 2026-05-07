@@ -1284,12 +1284,11 @@ function bindEvents() {
     const diff = e.changedTouches[0].clientX - touchStartX;
     if (Math.abs(diff) < 40) return;     // ignore tiny movements
     if (diff < 0) {
-      // Swipe left = go to previous period
+      // Swipe left = next period (newer) — matches calendar/gallery convention
+      if (headerPeriodOffset < 0) { headerPeriodOffset += 1; renderHeader(); }
+    } else {
+      // Swipe right = previous period (older)
       headerPeriodOffset -= 1;
-      renderHeader();
-    } else if (diff > 0 && headerPeriodOffset < 0) {
-      // Swipe right = go to next period (only if not already at current)
-      headerPeriodOffset += 1;
       renderHeader();
     }
   }, { passive: true });
