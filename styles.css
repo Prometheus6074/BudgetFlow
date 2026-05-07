@@ -306,12 +306,18 @@ svg { display: block; }
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
+  /* Hide scrollbar across all browsers while keeping scroll functional */
+  scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none;     /* IE / Edge */
   padding: 20px 16px 24px;
   max-width: 540px;
   margin: 0 auto;
   /* Width must be 100% when max-width centres it in a flex container */
   width: 100%;
 }
+
+/* Hide scrollbar on WebKit — Chrome, Safari, Android WebView */
+.main-content::-webkit-scrollbar { display: none; }
 
 /* ─── Tab System ─── */
 .tab-pane {
