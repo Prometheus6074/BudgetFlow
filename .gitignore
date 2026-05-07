@@ -1,0 +1,14 @@
+# Android build output
+android/.gradle/
+android/app/build/
+android/build/
+android/local.properties
+
+# Keystore — NEVER commit this
+*.jks
+*.keystore
+
+# IDE
+.idea/
+*.iml
+.DS_Store
