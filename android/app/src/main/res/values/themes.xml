@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Full-screen, no ActionBar — the WebView owns the entire display -->
-    <style name="AppTheme" parent="android:Theme.NoTitleBar.Fullscreen">
+    <!-- Fullscreen is handled in MainActivity via WindowInsetsController.
+         This theme just removes the action bar. -->
+    <style name="AppTheme" parent="android:Theme.Material.NoTitleBar">
         <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
     </style>
 </resources>

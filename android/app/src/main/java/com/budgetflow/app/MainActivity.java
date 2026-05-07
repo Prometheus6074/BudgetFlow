@@ -3,12 +3,14 @@ package com.budgetflow.app;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.View;
-import android.view.WindowManager;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 
 public class MainActivity extends Activity {
 
@@ -19,23 +21,22 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Full-screen immersive — hides status bar and nav bar for a native feel
-        getWindow().setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        // Modern edge-to-edge fullscreen — works correctly on Android 15
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+        WindowInsetsControllerCompat insetsController =
+            WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
+        insetsController.hide(WindowInsetsCompat.Type.systemBars());
+        insetsController.setSystemBarsBehavior(
+            WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
         );
 
         webView = new WebView(this);
-        webView.setSystemUiVisibility(
-            View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-        );
         setContentView(webView);
 
         WebSettings settings = webView.getSettings();
-        settings.setJavaScriptEnabled(true);          // Required for app.js
-        settings.setDomStorageEnabled(true);           // Required for localStorage
-        settings.setAllowFileAccessFromFileURLs(true); // Allow local asset access
+        settings.setJavaScriptEnabled(true);
+        settings.setDomStorageEnabled(true);
+        settings.setAllowFileAccessFromFileURLs(true);
         settings.setAllowUniversalAccessFromFileURLs(true);
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
         settings.setLoadWithOverviewMode(true);
@@ -43,11 +44,11 @@ public class MainActivity extends Activity {
         settings.setBuiltInZoomControls(false);
         settings.setDisplayZoomControls(false);
         settings.setSupportZoom(false);
+        settings.setMediaPlaybackRequiresUserGesture(false);
 
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                // Keep all navigation inside the WebView
                 return false;
             }
         });
